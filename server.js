@@ -1,11 +1,20 @@
 //1. importamos la libreria express
 import express from 'express'
 
-const user = {
-    name: 'Alex',
-    last_name: 'Marin',
-    age: 46
-}
+const users = [
+    {
+        id: 1,
+        name: 'Alex',
+        last_name: 'Marin',
+        age: 46
+    },
+    {
+        id: 2,
+        name: 'Shakira',
+        last_name: 'No se',
+        age: 45
+    }
+]
 
 //2. la ejecutamos (a la librería express)
 const app = express()
@@ -15,8 +24,16 @@ app.get('/', (req, res) => {
     res.send('Hola Mundo!!')
 })
 
+// recibir info del cliente por URL PARAMS
+app.get('/users/:id', (req, res) => {
+    res.send(users.find(item => item.id == req.params.id))
+})
+
+// recibir info del cliente por QUERY PARAMS
 app.get('/users', (req, res) => {
-    res.send(user)
+    const result = users.find(item => item.id == req.query.id)
+    if (!result) return res.send('No existe ese usuario')
+    res.send(result)
 })
 
 app.get('/home', (req, res) => {
